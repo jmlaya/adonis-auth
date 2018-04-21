@@ -137,7 +137,7 @@ class ApiScheme extends BaseTokenScheme {
       return true
     }
 
-    const token = this.getAuthHeader()
+    const token = this.getAuthHeader() || this.getTokenFromQuerystring()
     if (!token) {
       throw CE.InvalidApiToken.invoke()
     }
@@ -157,6 +157,11 @@ class ApiScheme extends BaseTokenScheme {
     }
 
     return true
+  }
+
+  getTokenFromQuerystring(){
+    const { request } = this._ctx
+    return request.get().token;
   }
 
   /**
